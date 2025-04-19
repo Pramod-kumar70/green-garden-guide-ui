@@ -3,7 +3,7 @@ import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import Footer from '@/components/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowRight, Plant, Droplet, Upload, BarChart4, Leaf } from 'lucide-react';
+import { ArrowRight, Leaf, Droplet, Upload, BarChart4 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
@@ -29,7 +29,7 @@ const Index = () => {
               {/* Feature 1 */}
               <Card className="card-garden h-full">
                 <CardHeader className="pb-2">
-                  <Plant className="h-10 w-10 text-garden-primary mb-2" />
+                  <Leaf className="h-10 w-10 text-garden-primary mb-2" />
                   <CardTitle className="text-xl text-garden-primary">Personalized Plant Recommendations</CardTitle>
                 </CardHeader>
                 <CardContent>

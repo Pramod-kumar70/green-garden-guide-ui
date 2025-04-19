@@ -5,7 +5,7 @@ import {
   Upload, 
   Calendar, 
   PlusCircle, 
-  Plant, 
+  Leaf, 
   BarChart4, 
   RefreshCw,
   Info,
@@ -79,7 +79,7 @@ const Dashboard = () => {
                 className="data-[state=active]:bg-garden-primary data-[state=active]:text-white"
                 onClick={() => setActiveTab('recommendations')}
               >
-                <Plant className="h-4 w-4 mr-2" />
+                <Leaf className="h-4 w-4 mr-2" />
                 Plant Recommendations
               </TabsTrigger>
               <TabsTrigger 
@@ -105,7 +105,7 @@ const Dashboard = () => {
               <Card>
                 <CardHeader>
                   <CardTitle className="text-garden-primary flex items-center">
-                    <Plant className="h-5 w-5 mr-2" />
+                    <Leaf className="h-5 w-5 mr-2" />
                     Recommended Plants for You
                   </CardTitle>
                   <CardDescription>

@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Upload, AlertTriangle, BugOff, Shield } from 'lucide-react';
+import { Upload, AlertTriangle, BugOff, Shield, Medicine } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -9,6 +9,7 @@ type DiseaseInfo = {
   name: string;
   symptoms: string;
   precautions: string[];
+  cures: string[];
 };
 
 const HealthTab = () => {
@@ -22,6 +23,11 @@ const HealthTab = () => {
         "Ensure good air circulation between plants",
         "Avoid overwatering and keep leaves dry",
         "Remove affected leaves promptly"
+      ],
+      cures: [
+        "Apply neem oil solution to affected areas",
+        "Use sulfur-based fungicide",
+        "Prune affected parts and dispose properly"
       ]
     },
     {
@@ -31,6 +37,11 @@ const HealthTab = () => {
         "Use well-draining soil",
         "Don't overwater plants",
         "Ensure pots have drainage holes"
+      ],
+      cures: [
+        "Remove plant from soil and trim affected roots",
+        "Repot in fresh, sterile potting mix",
+        "Apply fungicide specifically for root rot"
       ]
     },
     {
@@ -40,13 +51,18 @@ const HealthTab = () => {
         "Remove infected leaves",
         "Improve air circulation",
         "Water at soil level to keep leaves dry"
+      ],
+      cures: [
+        "Apply copper-based fungicide",
+        "Remove severely infected leaves",
+        "Increase spacing between plants"
       ]
     }
   ];
 
   const handleUploadImage = () => {
     setShowDiseaseInfo(true);
-    toast.info('Image analysis complete. Showing common plant diseases and precautions.');
+    toast.info("Image analysis complete. Showing common plant diseases and cures.");
   };
 
   return (
@@ -80,10 +96,10 @@ const HealthTab = () => {
           <CardHeader>
             <CardTitle className="text-garden-primary flex items-center">
               <AlertTriangle className="h-5 w-5 mr-2" />
-              Common Plant Diseases & Precautions
+              Plant Diseases & Treatments
             </CardTitle>
             <CardDescription>
-              Here are some common plant diseases and how to prevent them
+              Detected diseases, their symptoms, precautions, and cures
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -97,7 +113,8 @@ const HealthTab = () => {
                       <p className="text-sm text-garden-gray">{disease.symptoms}</p>
                     </div>
                   </div>
-                  <div className="ml-7">
+                  
+                  <div className="ml-7 space-y-4">
                     <div className="flex items-start gap-2">
                       <Shield className="h-5 w-5 text-garden-secondary mt-1" />
                       <div>
@@ -105,6 +122,18 @@ const HealthTab = () => {
                         <ul className="list-disc list-inside text-sm text-garden-gray space-y-1">
                           {disease.precautions.map((precaution, idx) => (
                             <li key={idx}>{precaution}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-2">
+                      <Medicine className="h-5 w-5 text-garden-primary mt-1" />
+                      <div>
+                        <h5 className="text-sm font-medium text-garden-primary mb-1">Cures:</h5>
+                        <ul className="list-disc list-inside text-sm text-garden-gray space-y-1">
+                          {disease.cures.map((cure, idx) => (
+                            <li key={idx}>{cure}</li>
                           ))}
                         </ul>
                       </div>
@@ -121,4 +150,3 @@ const HealthTab = () => {
 };
 
 export default HealthTab;
-

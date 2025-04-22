@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Upload, AlertTriangle, BugOff, Shield, Medicine } from 'lucide-react';
+import { Upload, AlertTriangle, BugOff, Shield, Pill } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -128,7 +128,7 @@ const HealthTab = () => {
                     </div>
 
                     <div className="flex items-start gap-2">
-                      <Medicine className="h-5 w-5 text-garden-primary mt-1" />
+                      <Pill className="h-5 w-5 text-garden-primary mt-1" />
                       <div>
                         <h5 className="text-sm font-medium text-garden-primary mb-1">Cures:</h5>
                         <ul className="list-disc list-inside text-sm text-garden-gray space-y-1">

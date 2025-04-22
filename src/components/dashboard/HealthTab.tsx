@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Upload, AlertTriangle, BugOff, Shield, Pill } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -14,6 +14,8 @@ type DiseaseInfo = {
 
 const HealthTab = () => {
   const [showDiseaseInfo, setShowDiseaseInfo] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const commonDiseases: DiseaseInfo[] = [
     {
@@ -60,9 +62,24 @@ const HealthTab = () => {
     }
   ];
 
-  const handleUploadImage = () => {
-    setShowDiseaseInfo(true);
-    toast.info("Image analysis complete. Showing common plant diseases and cures.");
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    
+    if (file) {
+      // Create a URL for the selected image
+      const imageUrl = URL.createObjectURL(file);
+      setSelectedImage(imageUrl);
+      
+      // Simulate image analysis completion after a delay (to mimic real processing)
+      setTimeout(() => {
+        setShowDiseaseInfo(true);
+        toast.info("Image analysis complete. Showing common plant diseases and cures.");
+      }, 1500);
+    }
+  };
+
+  const handleUploadClick = () => {
+    fileInputRef.current?.click();
   };
 
   return (
@@ -79,13 +96,42 @@ const HealthTab = () => {
         </CardHeader>
         <CardContent>
           <div className="border-2 border-dashed border-garden-secondary/50 rounded-lg p-6 text-center">
-            <Upload className="h-12 w-12 mx-auto text-garden-secondary mb-4" />
-            <h3 className="text-lg font-semibold text-garden-primary mb-2">Upload Plant Image</h3>
+            {selectedImage ? (
+              <div className="mb-4">
+                <img 
+                  src={selectedImage} 
+                  alt="Selected plant" 
+                  className="max-h-64 mx-auto rounded-lg"
+                />
+              </div>
+            ) : (
+              <Upload className="h-12 w-12 mx-auto text-garden-secondary mb-4" />
+            )}
+            
+            <h3 className="text-lg font-semibold text-garden-primary mb-2">
+              {selectedImage ? "Plant Image Uploaded" : "Upload Plant Image"}
+            </h3>
+            
             <p className="text-garden-gray text-sm mb-4">
-              Drag and drop your plant image here, or click to select a file
+              {selectedImage 
+                ? "Your plant image has been uploaded for analysis" 
+                : "Drag and drop your plant image here, or click to select a file"
+              }
             </p>
-            <Button onClick={handleUploadImage} className="bg-garden-secondary hover:bg-garden-secondary/90">
-              Select Image
+            
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              accept="image/*"
+              className="hidden"
+            />
+            
+            <Button 
+              onClick={handleUploadClick} 
+              className="bg-garden-secondary hover:bg-garden-secondary/90"
+            >
+              {selectedImage ? "Select Another Image" : "Select Image"}
             </Button>
           </div>
         </CardContent>

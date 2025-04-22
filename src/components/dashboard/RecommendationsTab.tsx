@@ -1,10 +1,9 @@
-
 import { toast } from 'sonner';
 import { PlusCircle, Leaf, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { useGarden } from '@/contexts/GardenContext';
 
-// Move the mock data to a separate file later if needed
 const recommendedPlants = [
   {
     id: 1,
@@ -43,8 +42,11 @@ const companionPlants = [
 ];
 
 const RecommendationsTab = () => {
-  const handleAddToGarden = (plantName: string) => {
-    toast.success(`${plantName} added to your garden!`);
+  const { addPlantToGarden } = useGarden();
+
+  const handleAddToGarden = (plant: any) => {
+    addPlantToGarden(plant);
+    toast.success(`${plant.name} added to your garden!`);
   };
 
   return (
@@ -80,7 +82,7 @@ const RecommendationsTab = () => {
                 <CardFooter className="pt-0 pb-3">
                   <Button 
                     className="w-full bg-garden-secondary hover:bg-garden-secondary/90 group" 
-                    onClick={() => handleAddToGarden(plant.name)}
+                    onClick={() => handleAddToGarden(plant)}
                   >
                     <PlusCircle className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform" />
                     Add to My Garden

@@ -2,8 +2,11 @@
 import { Droplet, Info } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useGarden } from '@/contexts/GardenContext';
 
 const CareTab = () => {
+  const { gardenPlants } = useGarden();
+
   return (
     <div className="space-y-6">
       <Card>
@@ -21,20 +24,18 @@ const CareTab = () => {
             <div className="bg-garden-light p-4 rounded-lg">
               <p className="text-garden-gray font-semibold mb-2">Today's Watering Tasks</p>
               <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <span className="text-garden-gray">Snake Plant</span>
-                  <Button size="sm" variant="outline" className="h-8 border-garden-secondary text-garden-secondary hover:bg-garden-secondary/10">
-                    <Droplet className="h-3 w-3 mr-1" />
-                    Mark as Watered
-                  </Button>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-garden-gray">Aloe Vera</span>
-                  <Button size="sm" variant="outline" className="h-8 border-garden-secondary text-garden-secondary hover:bg-garden-secondary/10">
-                    <Droplet className="h-3 w-3 mr-1" />
-                    Mark as Watered
-                  </Button>
-                </div>
+                {gardenPlants.map((plant) => (
+                  <div key={plant.id} className="flex justify-between items-center">
+                    <span className="text-garden-gray">{plant.name}</span>
+                    <Button size="sm" variant="outline" className="h-8 border-garden-secondary text-garden-secondary hover:bg-garden-secondary/10">
+                      <Droplet className="h-3 w-3 mr-1" />
+                      Mark as Watered
+                    </Button>
+                  </div>
+                ))}
+                {gardenPlants.length === 0 && (
+                  <p className="text-garden-gray/70 text-sm italic">No plants added to your garden yet</p>
+                )}
               </div>
             </div>
             

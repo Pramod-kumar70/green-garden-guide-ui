@@ -1,6 +1,6 @@
 
 import { useState, useRef } from 'react';
-import { Upload, AlertTriangle, BugOff, Shield, Pill } from 'lucide-react';
+import { Upload, AlertTriangle, BugOff, Shield, Pill, AloeVera, Snake } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,74 +12,103 @@ type DiseaseInfo = {
   cures: string[];
 };
 
+const plantDiseases = {
+  aloeVera: [
+    {
+      name: "Aloe Rust",
+      symptoms: "Brown, circular spots on leaves",
+      precautions: [
+        "Avoid overwatering",
+        "Ensure good air circulation",
+        "Keep leaves dry when watering"
+      ],
+      cures: [
+        "Remove affected leaves",
+        "Apply fungicide suitable for succulents",
+        "Improve growing conditions"
+      ]
+    },
+    {
+      name: "Soft Rot",
+      symptoms: "Mushy, water-soaked areas on leaves",
+      precautions: [
+        "Avoid overwatering",
+        "Use well-draining soil",
+        "Keep plant in proper temperature"
+      ],
+      cures: [
+        "Remove infected parts",
+        "Reduce watering",
+        "Apply copper-based fungicide"
+      ]
+    }
+  ],
+  snakePlant: [
+    {
+      name: "Root Rot",
+      symptoms: "Yellowing leaves, mushy base",
+      precautions: [
+        "Use well-draining soil",
+        "Water only when soil is dry",
+        "Avoid standing water in pot"
+      ],
+      cures: [
+        "Remove plant from soil",
+        "Cut away rotted roots",
+        "Repot in fresh, dry soil"
+      ]
+    },
+    {
+      name: "Leaf Spot",
+      symptoms: "Dark spots on leaves with yellow halos",
+      precautions: [
+        "Avoid wetting leaves",
+        "Maintain good air circulation",
+        "Keep leaves clean"
+      ],
+      cures: [
+        "Remove affected leaves",
+        "Apply fungicide",
+        "Adjust watering practices"
+      ]
+    }
+  ]
+};
+
 const HealthTab = () => {
   const [showDiseaseInfo, setShowDiseaseInfo] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [plantType, setPlantType] = useState<'aloeVera' | 'snakePlant' | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const commonDiseases: DiseaseInfo[] = [
-    {
-      name: "Powdery Mildew",
-      symptoms: "White powdery spots on leaves and stems",
-      precautions: [
-        "Ensure good air circulation between plants",
-        "Avoid overwatering and keep leaves dry",
-        "Remove affected leaves promptly"
-      ],
-      cures: [
-        "Apply neem oil solution to affected areas",
-        "Use sulfur-based fungicide",
-        "Prune affected parts and dispose properly"
-      ]
-    },
-    {
-      name: "Root Rot",
-      symptoms: "Wilting leaves and dark, mushy roots",
-      precautions: [
-        "Use well-draining soil",
-        "Don't overwater plants",
-        "Ensure pots have drainage holes"
-      ],
-      cures: [
-        "Remove plant from soil and trim affected roots",
-        "Repot in fresh, sterile potting mix",
-        "Apply fungicide specifically for root rot"
-      ]
-    },
-    {
-      name: "Leaf Spot Disease",
-      symptoms: "Brown or black spots on leaves",
-      precautions: [
-        "Remove infected leaves",
-        "Improve air circulation",
-        "Water at soil level to keep leaves dry"
-      ],
-      cures: [
-        "Apply copper-based fungicide",
-        "Remove severely infected leaves",
-        "Increase spacing between plants"
-      ]
-    }
-  ];
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     
     if (file) {
-      // Create a URL for the selected image
       const imageUrl = URL.createObjectURL(file);
       setSelectedImage(imageUrl);
       
-      // Simulate image analysis completion after a delay (to mimic real processing)
+      // Simulate image recognition - in this example we'll randomly choose between aloe vera and snake plant
+      // In a real app, this would use actual image recognition
+      const randomPlant = Math.random() > 0.5 ? 'aloeVera' : 'snakePlant';
+      
       setTimeout(() => {
+        setPlantType(randomPlant);
         setShowDiseaseInfo(true);
-        toast.info("Image analysis complete. Showing common plant diseases and cures.");
+        toast.info(`${randomPlant === 'aloeVera' ? 'Aloe Vera' : 'Snake Plant'} detected. Showing specific diseases and cures.`);
       }, 1500);
     }
   };
 
   const handleUploadClick = () => {
     fileInputRef.current?.click();
+  };
+
+  const getPlantIcon = () => {
+    if (!plantType) return <Upload className="h-12 w-12" />;
+    return plantType === 'aloeVera' 
+      ? <AloeVera className="h-12 w-12" />
+      : <Snake className="h-12 w-12" />;
   };
 
   return (
@@ -105,11 +134,13 @@ const HealthTab = () => {
                 />
               </div>
             ) : (
-              <Upload className="h-12 w-12 mx-auto text-garden-secondary mb-4" />
+              <div className="text-garden-secondary mb-4">
+                {getPlantIcon()}
+              </div>
             )}
             
             <h3 className="text-lg font-semibold text-garden-primary mb-2">
-              {selectedImage ? "Plant Image Uploaded" : "Upload Plant Image"}
+              {selectedImage ? `${plantType === 'aloeVera' ? 'Aloe Vera' : 'Snake Plant'} Image Uploaded` : "Upload Plant Image"}
             </h3>
             
             <p className="text-garden-gray text-sm mb-4">
@@ -137,20 +168,20 @@ const HealthTab = () => {
         </CardContent>
       </Card>
 
-      {showDiseaseInfo && (
+      {showDiseaseInfo && plantType && (
         <Card>
           <CardHeader>
             <CardTitle className="text-garden-primary flex items-center">
               <AlertTriangle className="h-5 w-5 mr-2" />
-              Plant Diseases & Treatments
+              {plantType === 'aloeVera' ? 'Aloe Vera' : 'Snake Plant'} Diseases & Treatments
             </CardTitle>
             <CardDescription>
-              Detected diseases, their symptoms, precautions, and cures
+              Common diseases, their symptoms, precautions, and cures
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-6">
-              {commonDiseases.map((disease, index) => (
+              {plantDiseases[plantType].map((disease, index) => (
                 <div key={index} className="border-b pb-4 last:border-b-0 last:pb-0">
                   <div className="flex items-start gap-2 mb-2">
                     <BugOff className="h-5 w-5 text-garden-primary mt-1" />
